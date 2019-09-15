@@ -10,14 +10,17 @@
 
 (ns substance.core
   (:use [seesaw.core])
-  (:import org.pushingpixels.substance.api.SubstanceLookAndFeel)
+  (:import org.pushingpixels.substance.api.SubstanceCortex$GlobalScope
+           ;; SubstanceLookAndFeel
+           )
   (:gen-class))
 
 (defn laf-selector []
+  (prn SubstanceCortex$GlobalScope)
   (horizontal-panel
     :items ["Substance skin: "
             (combobox
-              :model    (vals (SubstanceLookAndFeel/getAllSkins))
+              :model    (vals (SubstanceCortex$GlobalScope/getAllSkins))
               :renderer (fn [this {:keys [value]}]
                           (text! this (.getClassName value)))
               :listen   [:selection (fn [e]
@@ -27,7 +30,7 @@
                                         (-> e
                                           selection
                                           .getClassName
-                                          SubstanceLookAndFeel/setSkin)))])]))
+                                          SubstanceCortex$GlobalScope/setSkin)))])]))
 
 (def notes " This example shows the available Substance skins. Substance
 is a set of improved look and feels for Swing. To use it in a project,
@@ -46,7 +49,7 @@ skin in one of the following ways:
     do this *after* (seesaw.core/native!) since that sets the L&F.
 
 See http://insubstantial.github.com/insubstantial/substance/docs/getting-started.html
-for more info. There you'll also find much more info about the 
+for more info. There you'll also find much more info about the
 skins along with much less crappy looking demos.")
 
 (defn -main [& args]
@@ -70,4 +73,3 @@ skins along with much less crappy looking demos.")
                            (scrollable (listbox :model (range 100)))]))
       pack!
       show!)))
-
